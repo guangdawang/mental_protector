@@ -89,14 +89,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: AppColors.error.withOpacity(0.5)),
             ),
-            child: Row(
+            child: const Row(
               children: [
-                const Icon(Icons.warning, color: AppColors.error, size: 20),
-                const SizedBox(width: 8),
+                Icon(Icons.warning, color: AppColors.error, size: 20),
+                SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     '你的紧急联系功能已关闭近2个月，建议重新启用',
-                    style: const TextStyle(fontSize: 12, color: AppColors.error),
+                    style: TextStyle(fontSize: 12, color: AppColors.error),
                   ),
                 ),
               ],
@@ -115,7 +115,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           subtitle: const Text('每月提醒检查紧急联系设置'),
           value: settings.monthlyReminderEnabled,
           onChanged: (value) {
-            ref.read(userStateProvider.notifier).setMonthlyReminderEnabled(value);
+            ref
+                .read(userStateProvider.notifier)
+                .setMonthlyReminderEnabled(value);
           },
         ),
         SwitchListTile(
@@ -139,7 +141,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           subtitle: const Text('安全岛中的心跳声'),
           value: settings.audioEnabled,
           onChanged: (value) {
-            ref.read(userStateProvider.notifier).setAudioSettings(enabled: value);
+            ref
+                .read(userStateProvider.notifier)
+                .setAudioSettings(enabled: value);
           },
         ),
         if (settings.audioEnabled)
@@ -160,7 +164,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   label: '${(settings.audioVolume * 100).toInt()}%',
                   activeColor: AppColors.primary,
                   onChanged: (value) {
-                    ref.read(userStateProvider.notifier).setAudioSettings(volume: value);
+                    ref
+                        .read(userStateProvider.notifier)
+                        .setAudioSettings(volume: value);
                   },
                 ),
               ],
@@ -210,7 +216,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               },
             ),
           );
-        }).toList(),
+        }),
         ListTile(
           leading: const Icon(Icons.add, color: AppColors.primary),
           title: const Text(
@@ -327,7 +333,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             onPressed: () {
               ref.read(userStateProvider.notifier).enableEmergencyContact();
               Navigator.pop(context);
-              if (ref.read(userStateProvider).settings.emergencyContacts.isEmpty) {
+              if (ref
+                  .read(userStateProvider)
+                  .settings
+                  .emergencyContacts
+                  .isEmpty) {
                 _showAddContactDialog();
               } else {
                 _showEnableSuccessDialog();
@@ -438,14 +448,19 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-              if (nameController.text.isNotEmpty && phoneController.text.isNotEmpty) {
+              if (nameController.text.isNotEmpty &&
+                  phoneController.text.isNotEmpty) {
                 final contact = EmergencyContact(
                   id: DateTime.now().millisecondsSinceEpoch.toString(),
                   name: nameController.text,
                   phone: phoneController.text,
-                  relationship: relationshipController.text.isEmpty ? '紧急联系人' : relationshipController.text,
+                  relationship: relationshipController.text.isEmpty
+                      ? '紧急联系人'
+                      : relationshipController.text,
                 );
-                ref.read(userStateProvider.notifier).addEmergencyContact(contact);
+                ref
+                    .read(userStateProvider.notifier)
+                    .addEmergencyContact(contact);
                 Navigator.pop(context);
               }
             },
@@ -470,7 +485,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: AppColors.error),
             onPressed: () {
-              ref.read(userStateProvider.notifier).removeEmergencyContact(contactId);
+              ref
+                  .read(userStateProvider.notifier)
+                  .removeEmergencyContact(contactId);
               Navigator.pop(context);
             },
             child: const Text('删除'),

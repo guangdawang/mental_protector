@@ -10,7 +10,8 @@ class NotificationService {
   static final FlutterLocalNotificationsPlugin _notificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  static final StreamController<ReceivedNotification> _didReceiveLocalNotificationSubject =
+  static final StreamController<ReceivedNotification>
+      _didReceiveLocalNotificationSubject =
       StreamController<ReceivedNotification>.broadcast();
 
   static final StreamController<String?> _selectNotificationSubject =
@@ -24,7 +25,8 @@ class NotificationService {
     const DarwinInitializationSettings initializationSettingsIOS =
         DarwinInitializationSettings();
 
-    final InitializationSettings initializationSettings = InitializationSettings(
+    const InitializationSettings initializationSettings =
+        InitializationSettings(
       android: initializationSettingsAndroid,
       iOS: initializationSettingsIOS,
     );
@@ -51,7 +53,7 @@ class NotificationService {
 
     const NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
-      iOS: const DarwinNotificationDetails(),
+      iOS: DarwinNotificationDetails(),
     );
 
     await _notificationsPlugin.show(
@@ -76,7 +78,7 @@ class NotificationService {
 
     const NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
-      iOS: const DarwinNotificationDetails(),
+      iOS: DarwinNotificationDetails(),
     );
 
     await _notificationsPlugin.show(

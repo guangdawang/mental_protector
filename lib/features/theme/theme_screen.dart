@@ -16,7 +16,8 @@ class ThemeState {
 }
 
 /// 主题状态Provider
-final themeStateProvider = StateNotifierProvider<ThemeStateNotifier, ThemeState>((ref) {
+final themeStateProvider =
+    StateNotifierProvider<ThemeStateNotifier, ThemeState>((ref) {
   return ThemeStateNotifier();
 });
 
@@ -88,14 +89,13 @@ class ThemeScreen extends ConsumerWidget {
 
   Widget _buildThemeOption(
     BuildContext context,
-    WidgetRef ref,
-    {
-      required String title,
-      required String subtitle,
-      required IconData icon,
-      required bool isSelected,
-      required VoidCallback onTap,
-    }) {
+    WidgetRef ref, {
+    required String title,
+    required String subtitle,
+    required IconData icon,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
@@ -116,7 +116,9 @@ class ThemeScreen extends ConsumerWidget {
             Icon(
               icon,
               size: 32,
-              color: isSelected ? AppColors.primary : Colors.white.withOpacity(0.6),
+              color: isSelected
+                  ? AppColors.primary
+                  : Colors.white.withOpacity(0.6),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -143,7 +145,7 @@ class ThemeScreen extends ConsumerWidget {
               ),
             ),
             if (isSelected)
-              Icon(
+              const Icon(
                 Icons.check_circle,
                 color: AppColors.primary,
                 size: 28,
@@ -164,15 +166,15 @@ class ThemeScreen extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+          const Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.info_outline,
                 color: AppColors.primary,
                 size: 20,
               ),
-              const SizedBox(width: 8),
-              const Text(
+              SizedBox(width: 8),
+              Text(
                 '关于主题',
                 style: TextStyle(
                   fontSize: 16,

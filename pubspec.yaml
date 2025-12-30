@@ -30,6 +30,7 @@ dependencies:
   # UI增强
   lottie: ^2.7.0
   flutter_svg: ^2.0.9
+  fl_chart: ^0.68.0
 
   # 功能增强
   url_launcher: ^6.2.0

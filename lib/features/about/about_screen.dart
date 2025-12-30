@@ -149,7 +149,8 @@ class _AboutScreenState extends ConsumerState<AboutScreen> {
               icon: Icons.star,
               title: '给我们评分',
               subtitle: '在应用商店为我们评分',
-              onTap: () => _launchUrl('https://play.google.com/store/apps/details'),
+              onTap: () =>
+                  _launchUrl('https://play.google.com/store/apps/details'),
             ),
             const SizedBox(height: 32),
 
@@ -305,7 +306,7 @@ class _AboutScreenState extends ConsumerState<AboutScreen> {
                 ],
               ),
             ),
-            const Icon(
+            Icon(
               Icons.chevron_right,
               color: Colors.white.withOpacity(0.4),
             ),
@@ -328,11 +329,11 @@ class _AboutScreenState extends ConsumerState<AboutScreen> {
       ),
       child: Column(
         children: [
-          Row(
+          const Row(
             children: [
-              const Icon(Icons.code, color: AppColors.primary, size: 20),
-              const SizedBox(width: 12),
-              const Text(
+              Icon(Icons.code, color: AppColors.primary, size: 20),
+              SizedBox(width: 12),
+              Text(
                 '开源项目',
                 style: TextStyle(
                   color: Colors.white,

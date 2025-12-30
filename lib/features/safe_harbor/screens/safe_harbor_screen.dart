@@ -175,7 +175,7 @@ class _SafeHarborScreenState extends ConsumerState<SafeHarborScreen>
                   _buildTopIndicator(),
 
                   // 中间呼吸区域
-                  Expanded(
+                  const Expanded(
                     child: Center(
                       child: BreathingCircle(
                         isActive: true,
@@ -237,7 +237,8 @@ class _SafeHarborScreenState extends ConsumerState<SafeHarborScreen>
           const SizedBox(height: 12),
 
           // 紧急联系人按钮
-          if (settings.emergencyEnabled && settings.emergencyContacts.isNotEmpty)
+          if (settings.emergencyEnabled &&
+              settings.emergencyContacts.isNotEmpty)
             _buildEmergencyContactButton(),
 
           const SizedBox(height: 12),
@@ -311,9 +312,8 @@ class _SafeHarborScreenState extends ConsumerState<SafeHarborScreen>
 
   Widget _buildEmergencyContactButton() {
     final settings = ref.watch(userStateProvider).settings;
-    final contactNames = settings.emergencyContacts
-        .map((c) => c.name)
-        .join('、');
+    final contactNames =
+        settings.emergencyContacts.map((c) => c.name).join('、');
 
     return SizedBox(
       width: double.infinity,

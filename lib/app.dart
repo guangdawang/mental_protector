@@ -7,13 +7,9 @@ import 'features/settings/screens/settings_screen.dart';
 import 'features/onboarding/onboarding_screen.dart';
 import 'features/emotion/screens/emotion_history_screen.dart';
 import 'features/emotion/screens/emotion_input_screen.dart';
-import 'features/theme/theme_screen.dart';
-import 'features/about/about_screen.dart';
-import 'features/notification/notification_service.dart';
 import 'core/detection/crisis_detector.dart';
 import 'core/state/emotion_state.dart';
 import 'core/state/first_launch_state.dart';
-import 'core/state/theme_state.dart';
 
 /// 主应用Widget
 /// 配置全局主题和应用级设置
@@ -60,83 +56,6 @@ class MindDarkApp extends ConsumerWidget {
       home: const HomeScreen(),
     );
   }
-
-  Widget _buildQuickActions(BuildContext context) {
-    return GridView.count(
-      crossAxisCount: 2,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      mainAxisSpacing: 12,
-      crossAxisSpacing: 12,
-      childAspectRatio: 1.5,
-      children: [
-        _buildActionCard(
-          context,
-          icon: Icons.palette,
-          label: '主题设置',
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const ThemeScreen(),
-              ),
-            );
-          },
-        ),
-        _buildActionCard(
-          context,
-          icon: Icons.info_outline,
-          label: '关于应用',
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const AboutScreen(),
-              ),
-            );
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildActionCard(
-    BuildContext context, {
-    required IconData icon,
-    required String label,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.surface.withOpacity(0.5),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: AppColors.primary.withOpacity(0.3),
-            width: 1,
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              color: AppColors.primary,
-              size: 32,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 }
 
 /// 首页（包含测试输入检测功能）
@@ -149,11 +68,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final emotionState = ref.watch(emotionStateProvider);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final emotionState = ref.watch(emotionStateProvider);
 
     return Scaffold(
@@ -207,7 +122,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               '正在守护你的心灵',
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.white.withOpacity(0.7),
+                color: Colors.white.withValues(alpha: 0.7),
               ),
             ),
             const SizedBox(height: 20),
@@ -215,7 +130,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                color: emotionState.level.color.withOpacity(0.2),
+                color: emotionState.level.color.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                   color: emotionState.level.color,
@@ -295,83 +210,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildQuickActions(BuildContext context) {
-    return GridView.count(
-      crossAxisCount: 2,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      mainAxisSpacing: 12,
-      crossAxisSpacing: 12,
-      childAspectRatio: 1.5,
-      children: [
-        _buildActionCard(
-          context,
-          icon: Icons.palette,
-          label: '主题设置',
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const ThemeScreen(),
-              ),
-            );
-          },
-        ),
-        _buildActionCard(
-          context,
-          icon: Icons.info_outline,
-          label: '关于应用',
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const AboutScreen(),
-              ),
-            );
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildActionCard(
-    BuildContext context, {
-    required IconData icon,
-    required String label,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.surface.withOpacity(0.5),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: AppColors.primary.withOpacity(0.3),
-            width: 1,
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              color: AppColors.primary,
-              size: 32,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
   void _showTestInput(BuildContext context, WidgetRef ref) {
     final controller = TextEditingController();
     final startTime = DateTime.now();
@@ -398,7 +236,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               );
 
               // 更新情绪状态
-              ref.read(emotionStateProvider.notifier).handleCrisisDetection(result);
+              ref
+                  .read(emotionStateProvider.notifier)
+                  .handleCrisisDetection(result);
 
               // 进入安全岛
               Navigator.of(context).push(
@@ -429,7 +269,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               );
 
               // 更新情绪状态
-              ref.read(emotionStateProvider.notifier).handleCrisisDetection(result);
+              ref
+                  .read(emotionStateProvider.notifier)
+                  .handleCrisisDetection(result);
 
               if (result.isCrisis) {
                 Navigator.of(context).push(
@@ -452,168 +294,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildQuickActions(BuildContext context) {
-    return GridView.count(
-      crossAxisCount: 2,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      mainAxisSpacing: 12,
-      crossAxisSpacing: 12,
-      childAspectRatio: 1.5,
-      children: [
-        _buildActionCard(
-          context,
-          icon: Icons.palette,
-          label: '主题设置',
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const ThemeScreen(),
-              ),
-            );
-          },
-        ),
-        _buildActionCard(
-          context,
-          icon: Icons.info_outline,
-          label: '关于应用',
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const AboutScreen(),
-              ),
-            );
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildActionCard(
-    BuildContext context, {
-    required IconData icon,
-    required String label,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.surface.withOpacity(0.5),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: AppColors.primary.withOpacity(0.3),
-            width: 1,
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              color: AppColors.primary,
-              size: 32,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-  void _showManualSafeHarbor(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const SafeHarborScreen(),
-      ),
-    );
-  }
-
-  Widget _buildQuickActions(BuildContext context) {
-    return GridView.count(
-      crossAxisCount: 2,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      mainAxisSpacing: 12,
-      crossAxisSpacing: 12,
-      childAspectRatio: 1.5,
-      children: [
-        _buildActionCard(
-          context,
-          icon: Icons.palette,
-          label: '主题设置',
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const ThemeScreen(),
-              ),
-            );
-          },
-        ),
-        _buildActionCard(
-          context,
-          icon: Icons.info_outline,
-          label: '关于应用',
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const AboutScreen(),
-              ),
-            );
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildActionCard(
-    BuildContext context, {
-    required IconData icon,
-    required String label,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.surface.withOpacity(0.5),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: AppColors.primary.withOpacity(0.3),
-            width: 1,
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              color: AppColors.primary,
-              size: 32,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
   void _showEmotionInput(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -623,73 +303,83 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Widget _buildQuickActions(BuildContext context) {
-    return GridView.count(
-      crossAxisCount: 2,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      mainAxisSpacing: 12,
-      crossAxisSpacing: 12,
-      childAspectRatio: 1.5,
+    return Column(
       children: [
-        _buildActionCard(
-          context,
-          icon: Icons.palette,
-          label: '主题设置',
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const ThemeScreen(),
-              ),
-            );
-          },
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildQuickAction(
+              icon: Icons.favorite_border,
+              label: '心情',
+              onTap: () {
+                _showEmotionInput(context);
+              },
+            ),
+            _buildQuickAction(
+              icon: Icons.self_improvement,
+              label: '放松',
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const SafeHarborScreen(
+                      triggerReason: '手动进入',
+                    ),
+                  ),
+                );
+              },
+            ),
+            _buildQuickAction(
+              icon: Icons.history,
+              label: '历史',
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const EmotionHistoryScreen(),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
-        _buildActionCard(
-          context,
-          icon: Icons.info_outline,
-          label: '关于应用',
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const AboutScreen(),
-              ),
-            );
-          },
-        ),
+        const SizedBox(height: 20),
       ],
     );
   }
 
-  Widget _buildActionCard(
-    BuildContext context, {
+  Widget _buildQuickAction({
     required IconData icon,
     required String label,
     required VoidCallback onTap,
   }) {
-    return GestureDetector(
+    return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
       child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 12,
+        ),
         decoration: BoxDecoration(
-          color: AppColors.surface.withOpacity(0.5),
-          borderRadius: BorderRadius.circular(12),
+          color: const Color(0xFF1A3A5F).withValues(alpha: 0.5),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: AppColors.primary.withOpacity(0.3),
+            color: const Color(0xFF4ECDC4).withValues(alpha: 0.3),
             width: 1,
           ),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               icon,
-              color: AppColors.primary,
-              size: 32,
+              color: const Color(0xFF4ECDC4),
+              size: 28,
             ),
             const SizedBox(height: 8),
             Text(
               label,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 14,
+                fontSize: 12,
               ),
             ),
           ],
@@ -697,5 +387,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
     );
   }
-}
+
+  void _showManualSafeHarbor(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const SafeHarborScreen(
+          triggerReason: '手动进入',
+        ),
+      ),
+    );
+  }
 }

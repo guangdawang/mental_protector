@@ -94,7 +94,7 @@ class _EmotionInputScreenState extends ConsumerState<EmotionInputScreen> {
             const SizedBox(height: 24),
 
             // 备注输入
-            Text(
+            const Text(
               '备注（可选）',
               style: TextStyle(
                 fontSize: 14,
@@ -181,10 +181,8 @@ class _EmotionInputScreenState extends ConsumerState<EmotionInputScreen> {
                       color: isSelected ? option.color : Colors.white,
                     ),
                   ),
-                  if (isSelected)
-                    const SizedBox(height: 4),
-                  if (isSelected)
-                    _buildLevelIndicator(option.level),
+                  if (isSelected) const SizedBox(height: 4),
+                  if (isSelected) _buildLevelIndicator(option.level),
                 ],
               ),
             ),
@@ -218,9 +216,9 @@ class _EmotionInputScreenState extends ConsumerState<EmotionInputScreen> {
   void _submitRecord() {
     final note = _noteController.text.trim();
     ref.read(emotionStateProvider.notifier).addRecord(
-      _selectedLevel,
-      note: note.isEmpty ? null : note,
-    );
+          _selectedLevel,
+          note: note.isEmpty ? null : note,
+        );
 
     // 显示成功提示
     ScaffoldMessenger.of(context).showSnackBar(

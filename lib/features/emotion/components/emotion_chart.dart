@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import '../../data/models/contact_model.dart';
-import '../../core/state/emotion_state.dart';
-import '../../ui/themes/colors.dart';
+import '../../../core/state/emotion_state.dart';
+import '../../../ui/themes/colors.dart';
 
 /// 情绪趋势图表组件
 /// 使用fl_chart显示情绪变化趋势
@@ -36,7 +35,7 @@ class EmotionChart extends StatelessWidget {
     return Container(
       height: 200,
       decoration: BoxDecoration(
-        color: AppColors.surface.withOpacity(0.3),
+        color: AppColors.surface.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Center(
@@ -46,13 +45,13 @@ class EmotionChart extends StatelessWidget {
             Icon(
               Icons.show_chart,
               size: 48,
-              color: Colors.white.withOpacity(0.3),
+              color: Colors.white.withValues(alpha: 0.3),
             ),
             const SizedBox(height: 12),
             Text(
               '暂无数据',
               style: TextStyle(
-                color: Colors.white.withOpacity(0.5),
+                color: Colors.white.withValues(alpha: 0.5),
                 fontSize: 14,
               ),
             ),
@@ -68,7 +67,7 @@ class EmotionChart extends StatelessWidget {
     return Container(
       height: 200,
       decoration: BoxDecoration(
-        color: AppColors.surface.withOpacity(0.3),
+        color: AppColors.surface.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Center(
@@ -112,7 +111,7 @@ class EmotionChart extends StatelessWidget {
       height: 200,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surface.withOpacity(0.3),
+        color: AppColors.surface.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(16),
       ),
       child: LineChart(
@@ -133,7 +132,6 @@ class EmotionChart extends StatelessWidget {
                 if (touchedSpots.isEmpty) return [];
                 final index = touchedSpots.first.spotIndex.toInt();
                 final record = sortedRecords[index];
-                final emotionLevel = _getEmotionLevel(record.level);
                 return [
                   LineTooltipItem(
                     '${record.level}分',
@@ -159,7 +157,7 @@ class EmotionChart extends StatelessWidget {
       horizontalInterval: 2,
       getDrawingHorizontalLine: (value) {
         return FlLine(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           strokeWidth: 1,
         );
       },
@@ -193,7 +191,7 @@ class EmotionChart extends StatelessWidget {
               child: Text(
                 dateStr,
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.5),
+                  color: Colors.white.withValues(alpha: 0.5),
                   fontSize: 10,
                 ),
               ),
@@ -210,7 +208,7 @@ class EmotionChart extends StatelessWidget {
               return Text(
                 '${value.toInt()}',
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.5),
+                  color: Colors.white.withValues(alpha: 0.5),
                   fontSize: 10,
                 ),
               );
@@ -226,13 +224,13 @@ class EmotionChart extends StatelessWidget {
     return FlBorderData(
       show: true,
       border: Border.all(
-        color: Colors.white.withOpacity(0.1),
+        color: Colors.white.withValues(alpha: 0.1),
       ),
     );
   }
 
-  LineBarData _buildLineBarData(List<FlSpot> spots) {
-    return LineBarData(
+  LineChartBarData _buildLineBarData(List<FlSpot> spots) {
+    return LineChartBarData(
       spots: spots,
       isCurved: true,
       color: AppColors.primary,
@@ -252,7 +250,7 @@ class EmotionChart extends StatelessWidget {
       ),
       belowBarData: BarAreaData(
         show: true,
-        color: AppColors.primary.withOpacity(0.2),
+        color: AppColors.primary.withValues(alpha: 0.2),
       ),
     );
   }
@@ -263,7 +261,7 @@ class EmotionChart extends StatelessWidget {
 
     if (diff == 0) return '今天';
     if (diff == 1) return '昨天';
-    if (diff < 7) return '${diff}天前';
+    if (diff < 7) return '$diff天前';
 
     return '${date.month}/${date.day}';
   }
@@ -299,7 +297,7 @@ class SimpleEmotionChart extends StatelessWidget {
     return Container(
       height: 200,
       decoration: BoxDecoration(
-        color: AppColors.surface.withOpacity(0.3),
+        color: AppColors.surface.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Center(
@@ -315,7 +313,7 @@ class SimpleEmotionChart extends StatelessWidget {
             Text(
               '暂无数据',
               style: TextStyle(
-                color: Colors.white.withOpacity(0.5),
+                color: Colors.white.withValues(alpha: 0.5),
                 fontSize: 14,
               ),
             ),
@@ -330,7 +328,7 @@ class SimpleEmotionChart extends StatelessWidget {
       height: 200,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surface.withOpacity(0.3),
+        color: AppColors.surface.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(16),
       ),
       child: CustomPaint(
@@ -355,12 +353,13 @@ class _EmotionChartPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
 
     final fillPaint = Paint()
-      ..color = AppColors.primary.withOpacity(0.2)
+      ..color = AppColors.primary.withValues(alpha: 0.2)
       ..style = PaintingStyle.fill;
 
     // 计算坐标
     final sortedRecords = List<EmotionRecord>.from(records)
-      ..sort((a, b) => a.timestamp.compareTo(b.timestamp));
+      ..sort((a, b) => (a.timestamp ?? DateTime.now())
+          .compareTo(b.timestamp ?? DateTime.now()));
 
     final points = <Offset>[];
     final width = size.width - 32;
@@ -430,7 +429,7 @@ class _EmotionChartPainter extends CustomPainter {
 
   void _drawReferenceLines(Canvas canvas, Size size) {
     final linePaint = Paint()
-      ..color = Colors.white.withOpacity(0.1)
+      ..color = Colors.white.withValues(alpha: 0.1)
       ..strokeWidth = 1;
 
     // 0分和10分参考线
@@ -458,7 +457,7 @@ class _EmotionChartPainter extends CustomPainter {
       textDirection: TextDirection.ltr,
     );
     textPainter.layout();
-    textPainter.paint(canvas, Offset(0, 8));
+    textPainter.paint(canvas, const Offset(0, 8));
 
     final textPainter2 = TextPainter(
       text: const TextSpan(

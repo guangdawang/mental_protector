@@ -8,49 +8,49 @@ class HotlineService {
 
   /// 离线热线列表（内置在应用中）
   static final List<Hotline> hotlines = [
-    Hotline(
+    const Hotline(
       name: '北京心理援助热线',
       phone: '010-82951332',
       description: '24小时免费，专业心理咨询',
       tags: ['危机', '抑郁', '自杀干预'],
     ),
-    Hotline(
+    const Hotline(
       name: '希望24热线',
       phone: '400-161-9995',
       description: '全国性心理危机干预热线',
       tags: ['自杀预防', '情绪疏导'],
     ),
-    Hotline(
+    const Hotline(
       name: '浙江省心理援助热线',
       phone: '96525',
       description: '浙江省精神卫生中心',
       tags: ['本地', '专业'],
     ),
-    Hotline(
+    const Hotline(
       name: '上海心理援助热线',
       phone: '021-12320',
       description: '上海市精神卫生中心',
       tags: ['本地', '专业'],
     ),
-    Hotline(
+    const Hotline(
       name: '广州心理援助热线',
       phone: '020-81899120',
       description: '广州市心理危机干预中心',
       tags: ['本地', '24小时'],
     ),
-    Hotline(
+    const Hotline(
       name: '深圳心理援助热线',
       phone: '400-995-9959',
       description: '深圳市心理危机干预中心',
       tags: ['本地', '24小时'],
     ),
-    Hotline(
+    const Hotline(
       name: '青少年心理咨询热线',
       phone: '12355',
       description: '共青团青少年服务热线',
       tags: ['青少年', '成长'],
     ),
-    Hotline(
+    const Hotline(
       name: '全国妇联维权热线',
       phone: '12338',
       description: '全国妇女维权公益服务热线',
@@ -73,8 +73,8 @@ class HotlineService {
     final lowerKeyword = keyword.toLowerCase();
     return hotlines.where((h) {
       return h.name.toLowerCase().contains(lowerKeyword) ||
-             h.description.toLowerCase().contains(lowerKeyword) ||
-             h.tags.any((t) => t.toLowerCase().contains(lowerKeyword));
+          h.description.toLowerCase().contains(lowerKeyword) ||
+          h.tags.any((t) => t.toLowerCase().contains(lowerKeyword));
     }).toList();
   }
 

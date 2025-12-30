@@ -11,7 +11,8 @@ class EmotionHistoryScreen extends ConsumerStatefulWidget {
   const EmotionHistoryScreen({super.key});
 
   @override
-  ConsumerState<EmotionHistoryScreen> createState() => _EmotionHistoryScreenState();
+  ConsumerState<EmotionHistoryScreen> createState() =>
+      _EmotionHistoryScreenState();
 }
 
 class _EmotionHistoryScreenState extends ConsumerState<EmotionHistoryScreen> {
@@ -44,8 +45,7 @@ class _EmotionHistoryScreenState extends ConsumerState<EmotionHistoryScreen> {
       body: Column(
         children: [
           // 搜索栏
-          if (_searchQuery.isNotEmpty || history.isNotEmpty)
-            _buildSearchBar(),
+          if (_searchQuery.isNotEmpty || history.isNotEmpty) _buildSearchBar(),
 
           // 统计摘要
           if (history.isNotEmpty) _buildStatsCard(history),
@@ -95,8 +95,12 @@ class _EmotionHistoryScreenState extends ConsumerState<EmotionHistoryScreen> {
     final avgScore = history.isEmpty
         ? 0.0
         : history.map((r) => r.level).reduce((a, b) => a + b) / history.length;
-    final maxScore = history.isEmpty ? 0 : history.map((r) => r.level).reduce((a, b) => a > b ? a : b);
-    final minScore = history.isEmpty ? 0 : history.map((r) => r.level).reduce((a, b) => a < b ? a : b);
+    final maxScore = history.isEmpty
+        ? 0
+        : history.map((r) => r.level).reduce((a, b) => a > b ? a : b);
+    final minScore = history.isEmpty
+        ? 0
+        : history.map((r) => r.level).reduce((a, b) => a < b ? a : b);
 
     return Container(
       margin: const EdgeInsets.all(16),
@@ -133,7 +137,7 @@ class _EmotionHistoryScreenState extends ConsumerState<EmotionHistoryScreen> {
           label,
           style: TextStyle(
             fontSize: 12,
-            color: Colors.white.withOpacity(0.6),
+            color: Colors.white.withValues(alpha: 0.6),
           ),
         ),
       ],
@@ -162,37 +166,6 @@ class _EmotionHistoryScreenState extends ConsumerState<EmotionHistoryScreen> {
     );
   }
 
-  Widget _buildEmptyState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.history,
-            size: 100,
-            color: Colors.white.withOpacity(0.2),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            '暂无情绪记录',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.white.withOpacity(0.6),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            '使用应用时会自动记录你的情绪状态',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.white.withOpacity(0.4),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildEmptySearchResult() {
     return Center(
       child: Column(
@@ -201,14 +174,14 @@ class _EmotionHistoryScreenState extends ConsumerState<EmotionHistoryScreen> {
           Icon(
             Icons.search_off,
             size: 80,
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
           ),
           const SizedBox(height: 20),
           Text(
             '未找到相关记录',
             style: TextStyle(
               fontSize: 18,
-              color: Colors.white.withOpacity(0.6),
+              color: Colors.white.withValues(alpha: 0.6),
             ),
           ),
           const SizedBox(height: 8),
@@ -216,7 +189,7 @@ class _EmotionHistoryScreenState extends ConsumerState<EmotionHistoryScreen> {
             '试试其他关键词',
             style: TextStyle(
               fontSize: 14,
-              color: Colors.white.withOpacity(0.4),
+              color: Colors.white.withValues(alpha: 0.4),
             ),
           ),
         ],
@@ -224,13 +197,15 @@ class _EmotionHistoryScreenState extends ConsumerState<EmotionHistoryScreen> {
     );
   }
 
-  List<EmotionRecord> _filterHistory(List<EmotionRecord> history, String query) {
+  List<EmotionRecord> _filterHistory(
+      List<EmotionRecord> history, String query) {
     if (query.isEmpty) return history;
 
     final lowerQuery = query.toLowerCase();
     return history.where((record) {
       // 搜索备注
-      if (record.note != null && record.note!.toLowerCase().contains(lowerQuery)) {
+      if (record.note != null &&
+          record.note!.toLowerCase().contains(lowerQuery)) {
         return true;
       }
       // 搜索日期
@@ -253,18 +228,20 @@ class _EmotionHistoryScreenState extends ConsumerState<EmotionHistoryScreen> {
   Widget _buildHistoryList(List<EmotionRecord> history) {
     // 按日期分组
     final groupedRecords = _groupRecordsByDate(history);
+    final groupList = groupedRecords.entries.toList();
 
     return ListView.builder(
       padding: const EdgeInsets.all(16),
-      itemCount: groupedRecords.length,
+      itemCount: groupList.length,
       itemBuilder: (context, index) {
-        final group = groupedRecords[index];
+        final group = groupList[index];
         return _buildDateGroup(group);
       },
     );
   }
 
-  Map<String, List<EmotionRecord>> _groupRecordsByDate(List<EmotionRecord> records) {
+  Map<String, List<EmotionRecord>> _groupRecordsByDate(
+      List<EmotionRecord> records) {
     final grouped = <String, List<EmotionRecord>>{};
 
     for (final record in records) {
@@ -352,7 +329,7 @@ class _EmotionHistoryScreenState extends ConsumerState<EmotionHistoryScreen> {
                     _formatTime(record.timestamp),
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.white.withOpacity(0.6),
+                      color: Colors.white.withValues(alpha: 0.6),
                     ),
                   ),
                   if (record.note != null) ...[
@@ -403,7 +380,7 @@ class _EmotionHistoryScreenState extends ConsumerState<EmotionHistoryScreen> {
     } else if (difference == 1) {
       return '昨天';
     } else if (difference < 7) {
-      return '${difference}天前';
+      return '$difference天前';
     } else {
       return DateFormat('yyyy年MM月dd日').format(date);
     }

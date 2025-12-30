@@ -33,7 +33,7 @@ class AudioGeneratorService {
     _currentType = 'heartbeat';
 
     // 生成心跳音频数据（60 bpm，每秒一个心跳）
-    final duration = const Duration(seconds: 10); // 10秒循环
+    const duration = Duration(seconds: 10); // 10秒循环
     final audioData = _generateHeartbeatAudio(duration);
 
     // 播放生成的音频
@@ -57,7 +57,7 @@ class AudioGeneratorService {
     _currentType = 'breathing';
 
     // 生成呼吸引导音频（6秒循环：吸气2s + 屏息1s + 呼气3s）
-    final duration = const Duration(seconds: 6); // 6秒循环
+    const duration = Duration(seconds: 6); // 6秒循环
     final audioData = _generateBreathingAudio(duration);
 
     try {
@@ -80,7 +80,7 @@ class AudioGeneratorService {
     _currentType = 'white_noise';
 
     // 生成白噪音音频
-    final duration = const Duration(seconds: 30); // 30秒循环
+    const duration = Duration(seconds: 30); // 30秒循环
     final audioData = _generateWhiteNoiseAudio(duration);
 
     try {
@@ -103,7 +103,7 @@ class AudioGeneratorService {
     _currentType = 'pink_noise';
 
     // 生成粉红噪音音频
-    final duration = const Duration(seconds: 30);
+    const duration = Duration(seconds: 30);
     final audioData = _generatePinkNoiseAudio(duration);
 
     try {
@@ -158,10 +158,10 @@ class AudioGeneratorService {
     final buffer = Float64List(totalSamples);
 
     // 心跳参数
-    final beatInterval = _sampleRate ~/ 1; // 1秒一次心跳（60 bpm）
-    final firstPulseDuration = _sampleRate ~/ 20; // 第一个脉冲50ms
-    final secondPulseDuration = _sampleRate ~/ 15; // 第二个脉冲约66ms
-    final pulseGap = _sampleRate ~/ 10; // 两个脉冲间隔100ms
+    const beatInterval = _sampleRate ~/ 1; // 1秒一次心跳（60 bpm）
+    const firstPulseDuration = _sampleRate ~/ 20; // 第一个脉冲50ms
+    const secondPulseDuration = _sampleRate ~/ 15; // 第二个脉冲约66ms
+    const pulseGap = _sampleRate ~/ 10; // 两个脉冲间隔100ms
 
     for (int i = 0; i < totalSamples; i++) {
       final beatIndex = i % beatInterval;
@@ -172,16 +172,18 @@ class AudioGeneratorService {
         // 正弦波包络
         final envelope = math.sin(progress * math.pi);
         // 正弦波形
-        buffer[i] = 0.4 * envelope * math.sin(2 * math.pi * 60 * i / _sampleRate);
+        buffer[i] =
+            0.4 * envelope * math.sin(2 * math.pi * 60 * i / _sampleRate);
       }
       // 第二个脉冲（"通"）
       else if (beatIndex >= pulseGap &&
-                 beatIndex < pulseGap + secondPulseDuration) {
+          beatIndex < pulseGap + secondPulseDuration) {
         final localIndex = beatIndex - pulseGap;
         final progress = localIndex / secondPulseDuration;
         final envelope = math.sin(progress * math.pi);
         // 第二个脉冲频率略低
-        buffer[i] = 0.3 * envelope * math.sin(2 * math.pi * 50 * i / _sampleRate);
+        buffer[i] =
+            0.3 * envelope * math.sin(2 * math.pi * 50 * i / _sampleRate);
       }
       // 静音
       else {
@@ -227,7 +229,9 @@ class AudioGeneratorService {
 
       // 添加轻微颤音效果
       final tremolo = 1.0 + 0.1 * math.sin(2 * math.pi * 5 * i / _sampleRate);
-      buffer[i] = amplitude * tremolo * math.sin(2 * math.pi * frequency * i / _sampleRate);
+      buffer[i] = amplitude *
+          tremolo *
+          math.sin(2 * math.pi * frequency * i / _sampleRate);
     }
 
     return _float64ToWav(buffer);
@@ -291,7 +295,7 @@ class AudioGeneratorService {
   /// WAV格式：PCM 16-bit, 单声道, 44100Hz
   static Uint8List _float64ToWav(Float64List samples) {
     final sampleCount = samples.length;
-    final bytesPerSample = 2; // 16-bit
+    const bytesPerSample = 2; // 16-bit
     final dataSize = sampleCount * bytesPerSample;
     final totalSize = 44 + dataSize; // WAV头44字节 + 数据
 
@@ -309,8 +313,10 @@ class AudioGeneratorService {
     buffer.setUint16(20, 1, Endian.little); // PCM format
     buffer.setUint16(22, _channels, Endian.little); // channels
     buffer.setUint32(24, _sampleRate, Endian.little); // sample rate
-    buffer.setUint32(28, _sampleRate * _channels * bytesPerSample, Endian.little); // byte rate
-    buffer.setUint16(32, _channels * bytesPerSample, Endian.little); // block align
+    buffer.setUint32(28, _sampleRate * _channels * bytesPerSample,
+        Endian.little); // byte rate
+    buffer.setUint16(
+        32, _channels * bytesPerSample, Endian.little); // block align
     buffer.setUint16(34, 16, Endian.little); // bits per sample
 
     // data chunk

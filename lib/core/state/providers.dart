@@ -1,5 +1,6 @@
 /// 全局Providers
 /// 导出所有状态管理Provider
+library;
 
 // 情绪状态
 export 'emotion_state.dart';
