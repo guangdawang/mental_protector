@@ -1,0 +1,66 @@
+name: mindark_app
+description: 心灵方舟 - 青少年心理健康守护应用
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # 状态管理
+  flutter_riverpod: ^2.4.9
+
+  # 本地存储
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  shared_preferences: ^2.2.2
+
+  # 加密
+  encrypt: ^5.0.1
+  cryptography: ^2.0.0
+
+  # 文件操作
+  path_provider: ^2.1.0
+  share_plus: ^7.0.0
+  file_picker: ^8.0.0
+
+  # UI增强
+  lottie: ^2.7.0
+  flutter_svg: ^2.0.9
+
+  # 功能增强
+  url_launcher: ^6.2.0
+  vibration: ^1.8.0
+  package_info_plus: ^6.0.0
+  audioplayers: ^5.2.1
+  intl: ^0.18.1
+  flutter_local_notifications: ^16.3.0
+  rxdart: ^0.27.7
+
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+  hive_generator: ^2.0.1
+  build_runner: ^2.4.8
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/animations/
+    - assets/sounds/
+    - assets/data/
+
+  fonts:
+    - family: NotoSansSC
+      fonts:
+        - asset: assets/fonts/NotoSansSC-Regular.ttf
+        - asset: assets/fonts/NotoSansSC-Bold.ttf
+          weight: 700
