@@ -440,7 +440,7 @@ class _EmotionChartPainter extends CustomPainter {
     );
 
     canvas.drawLine(
-      Offset(16, 16),
+      const Offset(16, 16),
       Offset(size.width - 16, 16),
       linePaint,
     );
