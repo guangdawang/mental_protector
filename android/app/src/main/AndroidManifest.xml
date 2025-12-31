@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.mindark_app">
+    package="com.example.minddark_app">
     
     <!-- 权限声明 -->
     <!-- 拨打电话权限（拨打热线） -->

@@ -11,4 +11,4 @@ services:
     environment:
       - NODE_ENV=production
     labels:
-      - "com.mindark.description=心灵方舟Web应用"
+      - "com.minddark.description=心灵方舟Web应用"

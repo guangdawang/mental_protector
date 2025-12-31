@@ -1,6 +1,6 @@
 {
-    "name": "mindark_app",
-    "short_name": "mindark_app",
+    "name": "minddark_app",
+    "short_name": "minddark_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

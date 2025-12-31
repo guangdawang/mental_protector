@@ -29,7 +29,7 @@ class AppConstants {
   static const int heartbeatEndBPM = 60; // 目标心跳频率
 
   // 文件路径
-  static const String databaseName = 'mindark_db';
+  static const String databaseName = 'minddark_db';
   static const String encryptionKeyStorage = 'user_encryption_key';
 
   // 隐私
@@ -39,7 +39,7 @@ class AppConstants {
 /// 深夜时段常量
 class LateNightHours {
   static const int start = 2; // 凌晨2点
-  static const int end = 5;   // 凌晨5点
+  static const int end = 5; // 凌晨5点
 
   static bool isLateNight(DateTime dateTime) {
     final hour = dateTime.hour;
@@ -49,7 +49,7 @@ class LateNightHours {
 
 /// 呼吸阶段
 enum BreathingPhase {
-  inhale,   // 吸气
-  hold,     // 屏息
-  exhale,   // 呼气
+  inhale, // 吸气
+  hold, // 屏息
+  exhale, // 呼气
 }

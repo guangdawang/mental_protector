@@ -29,7 +29,8 @@ class BackupService {
 
       // 4. 加密数据
       final encryptedData = customPassword != null
-          ? await EncryptionService.encryptWithPassword(jsonString, customPassword)
+          ? await EncryptionService.encryptWithPassword(
+              jsonString, customPassword)
           : await EncryptionService.encryptText(jsonString);
 
       // 5. 构建备份文件内容
@@ -46,7 +47,8 @@ class BackupService {
       // 7. 保存文件
       final directory = await getApplicationDocumentsDirectory();
       final timestamp = DateTime.now().toIso8601String().replaceAll(':', '-');
-      final filename = 'mindark_backup_$timestamp${AppConstants.backupFileExtension}';
+      final filename =
+          'minddark_backup_$timestamp${AppConstants.backupFileExtension}';
       final filepath = '${directory.path}/$filename';
 
       final file = File(filepath);
@@ -210,7 +212,8 @@ class BackupService {
       final files = <String>[];
 
       await for (final entity in directory.list()) {
-        if (entity is File && entity.path.endsWith(AppConstants.backupFileExtension)) {
+        if (entity is File &&
+            entity.path.endsWith(AppConstants.backupFileExtension)) {
           files.add(entity.path);
         }
       }

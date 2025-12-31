@@ -16,7 +16,7 @@ class AboutScreen extends ConsumerStatefulWidget {
 class _AboutScreenState extends ConsumerState<AboutScreen> {
   PackageInfo _packageInfo = PackageInfo(
     appName: '心灵方舟',
-    packageName: 'com.example.mindark_app',
+    packageName: 'com.example.minddark_app',
     version: '1.0.0',
     buildNumber: '1',
   );
