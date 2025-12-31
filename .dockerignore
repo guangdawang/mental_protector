@@ -1,0 +1,25 @@
+# 构建产物
+build/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+
+# IDE
+.vscode/
+.idea/
+*.iml
+.metadata
+
+# Git
+.git/
+.gitignore
+
+# 文档
+*.md
+!README.md
+
+# 其他
+.DS_Store
